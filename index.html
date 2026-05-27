@@ -6,14 +6,27 @@
     <title>TaskFlow</title>
 
     <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ec4899">
 </head>
 <body>
 
     <div class="container">
         <h1>TaskFlow</h1>
 
+    <button id="themeToggle">🌙</button>    
+
+    <select id="colorTheme">
+        <option selected disabled>🎨 Cores</option>
+        <option value="#ec4899">🩷 Rosa</option>
+        <option value="#3b82f6">💙 Azul</option>
+        <option value="#22c55e">💚 Verde</option>
+        <option value="#a855f7">💜 Roxo</option>
+    </select>
+
     <div class="input-area">
         <input type="text" id="taskInput" placeholder="Digite uma tarefa...">
+
 
         <select id="taskCategory">
             <option value="Estudos">
@@ -32,17 +45,18 @@
         </select>
 
         <input type="time" id="taskTime">
+        <input type="time" id="taskStartTime">
 
         <select id="taskPriority">
 
             <option value="alta">
-                🔴
+                🔴 Alta
             </option>
             <option value="media">
-                🟡
+                🟡 Média
             </option>
             <option value="baixa">
-                🟢
+                🟢 Baixa
             </option>
         </select>
 
@@ -89,6 +103,11 @@
         <option value="Academia">🏋️‍♀️ Academia</option>
         <option value="Pessoal">🏡 Pessoal</option>
     </select>
+    <input
+         type="text"
+         id="searchTask"
+         placeholder="🔎 Buscar tarefa. . ."
+         >
     <div class="week-calendar">
 
         <div class="day" data-day="Segunda">

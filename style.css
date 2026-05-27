@@ -1,3 +1,9 @@
+:root{
+    --primary: #ec4899;
+    --primary-dark: #f472b6;
+    --primary-soft: #f472b6aa;
+}
+
 *{
     margin: 0;
     padding: 0;
@@ -35,6 +41,7 @@ h1{
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    align-items: center;
 }
 input,
 select,
@@ -42,6 +49,14 @@ button{
     border: 1px solid #e2e8f0;
     border-radius: 10px;
     padding: 10px;
+}
+#themeToggle,
+#colorTheme{
+    margin-top: 10px;
+}
+select{
+    min-width: 120px;
+    cursor: pointer;
 }
 
 input{
@@ -57,7 +72,7 @@ button{
     padding: 12px 18px;
     border: none;
     border-radius: 10px;
-    background: linear-gradient(135deg, #ec4899, #f472b6);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     color: white;
     cursor: pointer;
     transition: 0.2s;
@@ -79,7 +94,7 @@ button:hover{
 }
 
 .task{
-    background: #f394c3;
+    background: var(--primary);
     padding: 15px;
     border-radius: 14px;
     margin-bottom: 10px;
@@ -96,10 +111,16 @@ button:hover{
     text-decoration: line-through;
     opacity: 0.6;
 }
+.task-meta{
+    font-size: 11px;
+    opacity: 0.6;
+    margin-top: 6px;
+    text-align: right;
+}
 
 .late{
     border: 1px solid #ef4444;
-    background: #f394c3;
+    background: var(--primary);
 }
 
 .progress-container{
@@ -114,7 +135,7 @@ button:hover{
 .progress-bar{
     height: 100%;
     width: 0%;
-    background: linear-gradient(135deg, #ec4899, #f472b6);
+    background: linear-gradient(135deg, var(--primary), var(--primary-dark));
     transition: 0.3s ease;
     border-radius: 20px;
 }
@@ -125,20 +146,23 @@ button:hover{
     text-align: center;
 }
 .week-calendar{
-    overflow-x: auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    background: #f8fafc;
+    display: flex;
     gap: 10px;
-    margin-top: 20px;
+    overflow-x: auto;
+    padding-bottom: 10px;
+
+    scroll-behavior: smooth;
 }
 .day{
-    min-width: 0;
+    min-width: 140;
     overflow-wrap: break-word;
-    background: #f472b6;
+    background: var(--primary-dark);
     border-radius: 10px;
     padding: 10px;
     min-height: 120px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
 }
 .day h3{
     font-size: 14px;
@@ -155,6 +179,131 @@ button:hover{
     padding: 5px;
     border-radius: 6px;
     font-size: 12px;
+}
+.task{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.task button{
+    margin-left: 5px;
+    background: #0f172a;
+    color: white;
+    padding: 8px 10px;
+}
+
+.input-area{
+    position: relative;
+}
+body.dark{
+    background: linear-gradient(135deg, #0b1220, #0f172a);
+    color: #e2e8f0;
+}
+body.dark .container{
+    background: #1e293b;
+}
+body.dark .task{
+    background: #1e293b;
+    border: 1px solid #334155;
+}
+body.dark .task small,
+body.dark .task span{
+    color: #e2e8f0;
+}
+body.dark input,
+body.dark select{
+    background: #0f172a;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+}
+body.dark button{
+    background: #334155;
+    color: #f1f5f9;
+    box-shadow: 1px solid #475569;
+}
+body.dark button:hover{
+    background: #475569;
+}
+body.dark .day{
+    background: #1e293b;
+    color: #f1f5f9;
+    border: 1px solid #334155;
+}
+body.dark #addTaskBtn{
+    background: #334155;
+    color: #f1f5f9;
+}
+body.dark #themeToggle{
+    background: #334155;
+    color: #f1f5f9;
+    box-shadow: none;
+}
+body.dark .calendar-task{
+    background: #334155;
+    color: #f1f5f9;
+}
+body.dark .progress-bar{
+    background: linear-gradient(135deg, #334155, #475569);
+}
+body.dark .week-calendar{
+    background: transparent;
+}
+body.dark .task button{
+    background: #475569;
+    color: white;
+}
+@media (max-width: 768px){
+
+    .container{
+        width: 100%;
+        padding: 15px;
+        border-radius: 0;
+        min-height: 100vh;
+    }
+    h1{
+        font-size: 28px;
+    }
+    .input-area{
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    input,
+    select,
+    button{
+        width: 100%;
+        font-size: 16px;
+    }
+
+    #themeToggle,
+    #collorTheme{
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    .task{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    .task button{
+        margin-left: 0;
+        margin-right: 5px;
+    }
+   
+
+    #filterTasks,
+    #filterCategory,
+    #searchTask{
+        width: 100%;
+        margin-top: 10px;
+    }
+    .progress-container{
+        height: 12px;
+    }
+    #progressText{
+        font-size: 13px;
+    }
+   
 }
 
 @keyframes fadeIn{

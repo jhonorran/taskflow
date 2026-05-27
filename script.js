@@ -11,6 +11,10 @@ const taskPriority = document.getElementById("taskPriority");
 const taskDaily = document.getElementById("taskDaily");
 const taskDay = document.getElementById("taskDay");
 const filterCategory = document.getElementById("filterCategory");
+const searchTask = document.getElementById("searchTask");
+const themeToggle = document.getElementById("themeToggle");
+const colorTheme = document.getElementById("colorTheme");
+
 
 let tasks = [];
 
@@ -38,6 +42,15 @@ function renderTasks() {
     taskList.innerHTML = "";
 
     let filteredTasks = tasks;
+
+    const search = searchTask ? searchTask.value.toLowerCase(): "";
+    
+
+    if(search !== ""){
+        filteredTasks = filteredTasks.filter(task =>
+            task.text.toLowerCase().includes(search)
+        );
+    }
     
     if(filterTasks.value === "completed"){
 
@@ -114,15 +127,16 @@ function renderTasks() {
             ${task.category}
 
             <br>
-
-                ${task.date}
-
-            <br>
             
-            ⏰Terminar até:
-            ${task.time}
+            ⏲️Inicio: ${task.startTime || "__;__"}
+            <br>
+            🕰️Fim: ${task.time || "__;__"}
             </small>
-          </div>      
+            
+          </div>   
+          
+          <div class="task-meta">
+            Criado em: ${task.date}
         
           <div>
             <button onclick="toggleTask(${index})">
@@ -150,21 +164,24 @@ function addTask(){
 
     const text = taskInput.value.trim();
     const time = taskTime.value;
+    const startTime = taskStartTime.value;
     const category = taskCategory.value;
     const priority = taskPriority.value;
     const day = taskDay.value;
+    
 
     if(text === ""){
         return;
     }
 
     tasks.push({
-        text:text,
-        completed:false,
-        date:new Date().toLocaleString(),
-        time:time,
-        category:category,
-        priority:priority,
+        text: text,
+        completed: false,
+        date: new Date().toLocaleString(),
+        startTime: startTime,
+        time: time,
+        category: category,
+        priority: priority,
         daily: taskDaily.checked,
         day: day,
     });
@@ -225,6 +242,32 @@ taskInput.addEventListener("keypress", function(event){
         addTask();
     }
 });    
+themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
+        if(document.body.classList.contains("dark")){
+            localStorage.setItem("theme", "dark");
+            themeToggle.textContent = "☀️";
+        } 
+        else{
+            localStorage.setItem("theme", "light");
+            themeToggle.textContent = "🌙";
+        }
+});
+colorTheme.addEventListener("change", (e) => {
+
+    const color = e.target.value;
+
+    document.documentElement.style.setProperty(
+        "--primary",
+        color
+    );
+    document.documentElement.style.setProperty(
+        "--primary-dark",
+        color + "cc"
+    );
+    localStorage.setItem("themeColor", color);
+});
+
 taskTime.addEventListener("keypress", function(event){
 
     if(event.key === "Enter"){
@@ -239,6 +282,10 @@ filterTasks.addEventListener(
 );
 filterCategory.addEventListener(
     "change",
+    renderTasks
+);
+searchTask.addEventListener(
+    "input",
     renderTasks
 );
 
@@ -328,3 +375,30 @@ function renderCalendar(){
 }
 resetDailyTasks();
 renderTasks();
+
+const savedColor = localStorage.getItem("themeColor");
+
+if(savedColor){
+    document.documentElement.style.setProperty(
+        "--primary",
+        savedColor
+    );
+    document.documentElement.style.setProperty(
+        "--primary-dark",
+        savedColor + "cc"
+    );
+}
+if("serviceWorker" in navigator){
+    window.addEventListener("load", () => {
+        navigator.serviceWorker
+        .register("./service-worker.js")
+        .then(() => {
+            console.log("PWA funcionando 🚀");
+        })
+        .catch(error => {
+            console.log("Erro no PWA", error);
+        });
+    });
+}
+
+  
