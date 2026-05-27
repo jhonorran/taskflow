@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>TaskFlow</h1>
+
+    <div class="input-area">
+        <input type="text" id="taskInput" placeholder="Digite uma tarefa...">
+
+        <select id="taskCategory">
+            <option value="Estudos">
+                Estudos
+            </option>
+             <option value="Trabalho">
+                Trabalho
+            </option>
+             <option value="Academia">
+                Academia
+            </option>
+             <option value="Pessoal">
+                Pessoal
+            </option>
+
+        </select>
+
+        <input type="time" id="taskTime">
+
+        <select id="taskPriority">
+
+            <option value="alta">
+                🔴
+            </option>
+            <option value="media">
+                🟡
+            </option>
+            <option value="baixa">
+                🟢
+            </option>
+        </select>
+
+        <select id="taskDay">
+            <option value="Segunda">Segunda</option>
+            <option value="Terça">Terça</option>
+            <option value="Quarta">Quarta</option>
+            <option value="Quinta">Quinta</option>
+            <option value="Sexta">Sexta</option>
+            <option value="Sábado">Sábado</option>
+            <option value="Domingo">Domingo</option>
+
+        </select>
+
+        <label style="font-size: 12px;">
+            <input type="checkbox" id="taskDaily">
+            Repetir todo dia
+        </label>
+        <button id="addTaskBtn">Adicionar</button>
+    </div> 
+
+    <div class="starts">
+        <p id="taskCount">0 tarefas</p>
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <p id="progressText">0% concluído</p>    
+    </div>
+    <select id="filterTasks">
+        <option value="all">
+            Todas
+        </option>
+        <option value="completed">
+            Concluídas
+        </option>
+        <option value="pending">
+            Pendentes
+        </option>
+    </select>
+    <select id="filterCategory">
+        <option value="all">Todas categorias</option>
+        <option value="Estudos">📚 Estudos</option>
+        <option value="Trabalho">💼 Trabalho</option>
+        <option value="Academia">🏋️‍♀️ Academia</option>
+        <option value="Pessoal">🏡 Pessoal</option>
+    </select>
+    <div class="week-calendar">
+
+        <div class="day" data-day="Segunda">
+            <h3>Segunda</h3>
+            <div class="day-tasks"></div>
+        </div>
+        <div class="day" data-day="Terça">
+            <h3>Terça</h3>
+            <div class="day-tasks"></div>
+        </div>
+        <div class="day" data-day="Quarta">
+            <h3>Quarta</h3>
+            <div class="day-tasks"></div>
+        </div>
+        <div class="day" data-day="Quinta">
+            <h3>Quinta</h3>
+            <div class="day-tasks"></div>
+        </div>
+        <div class="day" data-day="Sexta">
+            <h3>Sexta</h3>
+            <div class="day-tasks"></div>
+        </div>
+        <div class="day" data-day="Sábado">
+            <h3>Sábado</h3>
+            <div class="day-tasks"></div>
+        </div>
+        <div class="day" data-day="Domingo">
+            <h3>Domingo</h3>
+            <div class="day-tasks"></div>
+        </div>
+    </div>
+    <ul id="taskList"></ul>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
