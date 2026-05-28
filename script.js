@@ -15,6 +15,8 @@ const searchTask = document.getElementById("searchTask");
 const themeToggle = document.getElementById("themeToggle");
 const colorTheme = document.getElementById("colorTheme");
 
+let draggedIndex = null;
+let placeholder = null;
 
 let tasks = [];
 
@@ -42,7 +44,6 @@ function renderTasks() {
     taskList.innerHTML = "";
 
     let filteredTasks = tasks;
-
     const search = searchTask ? searchTask.value.toLowerCase(): "";
     
 
@@ -66,17 +67,20 @@ function renderTasks() {
     }
 
     filteredTasks.forEach((task, index) => {
+        
 
         let priorityEmoji = "";
 
-        if(task.priority === "alta"){
+        const p = (task.priority || "").toLowerCase();
+
+        if(p.includes("alta")){
             priorityEmoji = "🚨"
         }
-        if(task.priority === "media"){
-            priorityEmoji = "🔶"
+        else if (p.includes("média")){
+            priorityEmoji = "🔶";
         }
-         if(task.priority === "baixa"){
-            priorityEmoji = "🟩"
+        else if (p.includes("baixa")){
+            priorityEmoji = "🟩";
         }
 
         let categoryEmoji = "";
@@ -97,6 +101,19 @@ function renderTasks() {
 
         const li = document.createElement("li");
         li.classList.add("task");
+        li.dataset.index = index;
+        li.style.position = "relative";
+        li.style.cursor = "grab";
+
+        li.addEventListener("pointerdown", (e) => {
+            draggedIndex = index;
+            li.classList.add("dragging");
+        });
+    
+
+        console.log("TASK", task.text);
+        console.log("DRAG TEST:", li.draggable);
+      
 
         if(isTaskLate(task) && !task.completed){
             li.classList.add("late");
@@ -217,19 +234,48 @@ function deleteTask(index){
     updateProgress();
 }
 function editTask(index){
+    const task = tasks[index];
 
-    const newText = prompt("Editar tarefa:", tasks[index].text);
+    const clean = (v) => v ? v.trim() : "";
+
+    const newText = prompt("Editar tarefa:", task.text);
 
     if(newText === null){
         return;
     }
+    const newPriority = prompt("Prioridade (alta, média, baixa):",
+        task.priority
+    );
+    if(newPriority === null) return;
+    const newCategory = prompt("Categoria (Estudos, Trabalho, Academia, Pessoal):",
+        task.category
+    );
+    if(newCategory === null) return;
+    const newDay = prompt("Dia (Segunda, Terça, Quarta, Quinta, Sexta, Sábado, Domingo):",
+        task.day
+    );
+    if(newDay === null) return;
+
+    const newStartTime = prompt("Hora de início:",
+        task.startTime || "");
+    if(newStartTime === null) return;
+    
+    const newTime = prompt("Hora de término:",
+        task.startTime || "");
+    if(newTime === null) return;
+    
+
   
-    tasks[index].text = newText.trim();
+    task.text = clean(newText);
+    task.priority = clean(newPriority).toLowerCase();
+    task.category = clean(newCategory);
+    task.day = clean(newDay);
+    task.startTime = clean(newStartTime);
+    task.time = clean(newTime);
 
     saveTasks();
-
     renderTasks();
-
+    renderCalendar();
 
 }
 
@@ -400,5 +446,37 @@ if("serviceWorker" in navigator){
         });
     });
 }
+window.addEventListener("load", () => {
+const days = document.querySelectorAll(".day");
+
+days.forEach(day => {
+
+    day.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        day.classList.add("drag-over");
+    });
+
+    day.addEventListener("dragleave", () => {
+        day.classList.remove("drag-over");
+    });
+
+    day.addEventListener("drop", (e) => {
+        e.preventDefault();
+        day.classList.remove("drag-over");
+
+        const index = Number(e.dataTransfer.getData("text/plain"));
+        const newDay = day.dataset.day;
+
+        if (isNaN(index)) return;
+
+        tasks[index].day = newDay;
+
+        saveTasks();
+        renderTasks();
+        renderCalendar();
+    });
+});
+
+});
 
   

@@ -24,12 +24,14 @@ body{
 
 .container{
     width: 90%;
-    max-width: 900px;
+    max-width: 600px;
     overflow: hidden;
     background: white;
     padding: 20px;
     border-radius: 16px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    margin: 0 auto;
+    
 }
 
 h1{
@@ -41,7 +43,7 @@ h1{
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: stretch;
 }
 input,
 select,
@@ -155,7 +157,14 @@ button:hover{
     scroll-behavior: smooth;
 }
 .day{
-    min-width: 140;
+    transition: 0.2s;
+}
+.day.drag-over{
+    outline: 2px dashed var(--primary);
+    transform: scale(1.02);
+}
+.day{
+    min-width: 140px;
     overflow-wrap: break-word;
     background: var(--primary-dark);
     border-radius: 10px;
@@ -194,6 +203,21 @@ button:hover{
 
 .input-area{
     position: relative;
+}
+.time-group{
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+.time-field{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.time-field label{
+    font-size: 12px;
+    margin-bottom: 4px;
+    color: #64748b;
 }
 body.dark{
     background: linear-gradient(135deg, #0b1220, #0f172a);
@@ -303,7 +327,26 @@ body.dark .task button{
     #progressText{
         font-size: 13px;
     }
+    .time-group{
+        flex-direction: column;
+    }
    
+}
+@media (max-width: 768px){
+
+    .week-calendar{
+        flex-wrap: nowrap;
+        overflow-x: auto;
+    }
+    .day{
+        min-width: 160px;
+    }
+    button, 
+    input,
+    select{
+        width: 100%;
+        box-sizing: border-box;
+    }
 }
 
 @keyframes fadeIn{
