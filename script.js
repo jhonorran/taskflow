@@ -1,4 +1,4 @@
-console.log("JS conectado");
+console.log("VERSÃO NOVA DO GITHUB ATIVA");
 
 const taskInput = document.getElementById("taskInput");
 const taskTime = document.getElementById("taskTime");
