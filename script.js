@@ -1,7 +1,5 @@
 console.log("VERSÃO NOVA DO GITHUB ATIVA - TESTE 999");
 
-alert ("SCRIPT CARREGOU");
-
 const taskInput = document.getElementById("taskInput");
 const taskTime = document.getElementById("taskTime");
 const addTaskBtn = document.getElementById("addTaskBtn");
@@ -561,7 +559,6 @@ if ("Notification" in window) {
 
             console.log("Executando checkTodayTasks");
 
-            alert("TESTE ALERTAR");
 
             new Notification(
                 "🚀Teste",
