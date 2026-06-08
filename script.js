@@ -1,4 +1,6 @@
-console.log("VERSÃO NOVA DO GITHUB ATIVA");
+console.log("VERSÃO NOVA DO GITHUB ATIVA - TESTE 999");
+
+alert ("SCRIPT CARREGOU");
 
 const taskInput = document.getElementById("taskInput");
 const taskTime = document.getElementById("taskTime");
@@ -395,6 +397,130 @@ function resetDailyTasks(){
         saveTasks();
     }
 }
+
+function checkTodayTasks() {
+
+    console.log("Função checkTodayTask iniciou")
+
+    if(Notification.permission !== "granted"){
+        return;
+    }
+
+    const daysMap = {
+        0: "Domingo",
+        1: "Segunda",
+        2: "Terça",
+        3: "Quarta",
+        4: "Quinta",
+        5: "Sexta",
+        6: "Sábado",
+    };
+
+    const today = daysMap[new Date().getDay()];
+
+    const todayTasks = tasks.filter(task =>
+        task.day === today &&
+        !task.completed
+    );
+
+    console.log("Hoje é", today);
+    console.log("Tarefas encontradas:", todayTasks);
+    console.log("Quantidade:", todayTasks.length);
+
+    if(todayTasks.length === 0){
+        return;
+    }
+
+    const lastNotificationDay = 
+    localStorage.getItem("lastNotificationDay");
+
+    const currentDate =
+    new Date().toDateString();
+
+    if(lastNotificationDay === currentDate){
+        return;
+    }
+
+    console.log("VAI ENVIAR NOTIFICAÇÃO");
+
+    new Notification("📅 TaskFlow", {
+        body: `Você possui ${todayTasks.length} tarefa(s) programada(s) para hoje.`
+    });
+
+    localStorage.setItem(
+        "lastNotificationDay",
+        currentDate
+    );
+}
+
+function checkUpcomingTasks() {
+
+    if (Notification.permission !== "granted") {
+        return;
+    }
+
+    const now = new Date();
+
+    const currentDay = {
+        0: "Domingo",
+        1: "Segunda",
+        2: "Terça",
+        3: "Quarta",
+        4: "Quinta",
+        5: "Sexta",
+        6: "Sábado"
+    }[now.getDay()];
+
+    tasks.forEach(task => {
+
+        if (
+            task.day !== currentDay || 
+            task.completed ||
+            !task.startTime
+        ) {
+            return;
+        }
+
+        const [hours, minutes] =
+        task.startTime.split(":");
+
+        const taskDate = new Date();
+
+        taskDate.setHours(hours);
+        taskDate.setMinutes(minutes);
+        taskDate.setSeconds(0);
+
+        const diffMinutes =
+        Math.floor((taskDate - now) / 60000);
+
+        if (diffMinutes === 10) {
+
+            console.log.apply("NOTIFICAÇÃO DE 10 MINUTOS");
+
+            const notificationKey = 
+            `notify-${task.text}-${now.toDateString()}`;
+
+            if (
+                localStorage.getItem(notificationKey)
+            ) {
+                return;
+            }
+
+            new Notification(
+                "⏰ Taskflow",
+                {
+                    body: `A tarefa "${task.text}" começa em 10 minutos.`
+                }
+            );
+
+            localStorage.setItem(
+                notificationKey,
+                "true"
+            );
+        }
+    });
+}
+
 function renderCalendar(){
 
     const days = document.querySelectorAll(".day-tasks");
@@ -421,6 +547,38 @@ function renderCalendar(){
 }
 resetDailyTasks();
 renderTasks();
+
+
+// Pedindo autorização au usuário para enviar notificações
+if ("Notification" in window) {
+
+    Notification.requestPermission()
+    .then(permission => {
+
+        console.log("Permissão:", permission);
+
+        if(permission === "granted"){
+
+            console.log("Executando checkTodayTasks");
+
+            alert("TESTE ALERTAR");
+
+            new Notification(
+                "🚀Teste",
+                {
+                    body: "notificação funcionando!"
+                }
+            );
+            
+            checkTodayTasks();
+
+            setInterval(() => {
+                checkUpcomingTasks();
+            }, 60000);
+        }
+
+    });
+}
 
 const savedColor = localStorage.getItem("themeColor");
 
