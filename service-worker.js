@@ -1,4 +1,4 @@
-const CACHE_NAME = "taskflow-cache-v2";
+const CACHE_NAME = "taskflow-cache-v3";
 
 const urlsToCache = [
     "./",
@@ -25,4 +25,12 @@ self.addEventListener("fetch", event => {
         return response || fetch(event.request);
     })
 );
+});
+self.addEventListener("notificationclick", event => {
+
+    event.notification.close();
+
+    event.waitUntil(
+        clients.openWindow("./")
+    );
 });

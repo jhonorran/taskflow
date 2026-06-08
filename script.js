@@ -439,10 +439,17 @@ function checkTodayTasks() {
         return;
     }
 
-    console.log("VAI ENVIAR NOTIFICAÇÃO");
+    console.log("VAI NOTIFICAR AGORA");
 
-    new Notification("📅 TaskFlow", {
-        body: `Você possui ${todayTasks.length} tarefa(s) programada(s) para hoje.`
+    navigator.serviceWorker.ready.then(registration => {
+
+        registration.showNotification(
+            "📅 TaskFlow",
+            {
+                body: `Você possui ${todayTasks.length} tarefa(s) programada(s) para hoje.`,
+                icon: "./icon-192.png"
+            }
+        );
     });
 
     localStorage.setItem(
@@ -504,12 +511,16 @@ function checkUpcomingTasks() {
                 return;
             }
 
-            new Notification(
-                "⏰ Taskflow",
-                {
-                    body: `A tarefa "${task.text}" começa em 10 minutos.`
-                }
-            );
+            navigator.serviceWorker.ready.then(registration => {
+
+                registration.showNotification(
+                    "⏰ TaskFlow",
+                    {
+                        body: `A tarefa "${task.text}" começa em 10 minutos.`,
+                        icon: "./icon-192.png"
+                    }
+                );
+            });
 
             localStorage.setItem(
                 notificationKey,
